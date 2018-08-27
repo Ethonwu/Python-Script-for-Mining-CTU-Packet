@@ -20,8 +20,10 @@ do
   sed -i 's/,#SUP:,/ /' ddd
   python2.7 ~/packet/script/Value_to_Item.py -f ddd -t $tablefile > final_$min_sup_result/$final_result
   rm ddd
-
-
-
 done
+mkdir table
+mv Table_output* table/
+mkdir num_output
+mv output_* num_output/
+
 

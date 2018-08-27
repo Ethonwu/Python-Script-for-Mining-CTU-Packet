@@ -31,9 +31,10 @@ def runSplit(tshark_out_list):
         split_output_name.append(path)
     return split_output_name
 def Mining(file_path):
-    print os.system('pwd')
     for name in file_path:
-        print name
+        os.chdir(name)
+        command = "sh ~/packet/script/Mining.sh"
+        #os.system(command)
 if __name__=="__main__":
     work_path = os.popen('pwd').read().split('\n')[0:-1]
     pacp_path = getAllDir(work_path)

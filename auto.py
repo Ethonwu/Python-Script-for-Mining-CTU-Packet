@@ -13,7 +13,7 @@ def getFileSize(path):
         command = "tshark -r " + name + " -Vx > output/" + output_name
         output_file_path = "output/" + output_name
         tshark_output.append(output_file_path)
-        #os.system(command)
+        os.system(command)
     os.chdir("output")
     return tshark_output
 def getAllDir(pwdpath):
@@ -24,8 +24,11 @@ def runSplit(tshark_out_list):
     split_output_name = []
     for name in tshark_out_list:
         print "name is:"+name[7:]
-        command = "python2.7 ../script/split.py -f " + name
-        #os.system(command)
+        packet_num_file = "packet_num_" + name[7:]
+        command = "cat " + name[7:] + ' | grep "bytes on wire" | wc -l > ../' + packet_num_file
+        os.system(command)
+        command = "python2.7 ~/packet/script/split.py -f " + name[7:]
+        os.system(command)
         path = "output_" + name[7:]
         print "Path is:"+path
         split_output_name.append(path)
@@ -34,7 +37,10 @@ def Mining(file_path):
     for name in file_path:
         os.chdir(name)
         command = "sh ~/packet/script/Mining.sh"
-        #os.system(command)
+        os.system(command)
+        os.chdir("../")
+        command = "mv " + name + " ../"
+        os.system(command)
 if __name__=="__main__":
     work_path = os.popen('pwd').read().split('\n')[0:-1]
     pacp_path = getAllDir(work_path)
@@ -44,4 +50,7 @@ if __name__=="__main__":
         tshark_output = getFileSize(paths)
         split_outputPath = runSplit(tshark_output)
         Mining(split_outputPath)
+        os.chdir(work_path[0])
+        command = "rm -r " + paths + "/output/"
+        os.system(command)
 
